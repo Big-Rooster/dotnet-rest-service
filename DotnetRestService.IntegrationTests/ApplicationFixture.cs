@@ -1,0 +1,146 @@
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Text.Json;
+using DotnetRestService.Client;
+using DotnetRestService.Server;
+using DotnetRestService.Server.Controllers;
+
+namespace DotnetRestService.IntegrationTests;
+
+public class ApplicationFixture: IDisposable
+{
+    private readonly DotnetRestServiceServer _server;
+    private readonly DotnetRestServiceClient _client;
+    private readonly HttpClient _httpClient;
+    
+    public ApplicationFixture()
+    {
+        _server = new DotnetRestServiceServer()
+            .WithEphemeral()
+            .WithRandomPorts()
+            .Start();
+        
+        var httpUrl = _server.getHttpUrl();
+        if (string.IsNullOrEmpty(httpUrl))
+        {
+            throw new InvalidOperationException("Failed to get HTTP server URL");
+        }
+        
+        _httpClient = new HttpClient();
+        _client = DotnetRestServiceClient.Of(_httpClient, httpUrl);
+        
+        // Initialize async components
+        InitializeAsync(httpUrl).GetAwaiter().GetResult();
+    }
+    
+    private async Task InitializeAsync(string httpUrl)
+    {
+        // Wait for server to be ready
+        await WaitForServerReady(httpUrl);
+        
+        // Get authentication token for tests
+        var token = await GetAuthTokenAsync(httpUrl);
+        _client.SetAuthorizationToken(token);
+    }
+    
+    private async Task WaitForServerReady(string baseUrl)
+    {
+        var maxRetries = 30;
+        var delay = TimeSpan.FromSeconds(1);
+        
+        for (int i = 0; i < maxRetries; i++)
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"{baseUrl}/health");
+                if (response.IsSuccessStatusCode)
+                {
+                        return;
+                }
+            }
+            catch
+            {
+                // Server not ready yet
+            }
+            
+            if (i < maxRetries - 1)
+            {
+                await Task.Delay(delay);
+            }
+        }
+        
+        throw new InvalidOperationException("Server failed to start within timeout period");
+    }
+    
+    private async Task<string> GetAuthTokenAsync(string baseUrl)
+    {
+        var tokenRequest = new TokenRequest
+        {
+            ClientId = "admin-client",
+            ClientSecret = "admin-secret"
+        };
+        
+        var tokenUrl = $"{baseUrl}/api/auth/token";
+        
+        // Add retry logic for auth token request
+        for (int i = 0; i < 5; i++)
+        {
+            try
+            {
+                var response = await _httpClient.PostAsJsonAsync(tokenUrl, tokenRequest);
+                if (response.IsSuccessStatusCode)
+                {
+                    var tokenResponse = await response.Content.ReadFromJsonAsync<TokenResponse>();
+                    return tokenResponse?.AccessToken ?? throw new InvalidOperationException("Failed to get auth token");
+                }
+                
+                var content = await response.Content.ReadAsStringAsync();
+                
+                // If it's 404, the endpoint might not be ready yet, retry
+                if (response.StatusCode == System.Net.HttpStatusCode.NotFound && i < 4)
+                {
+                    await Task.Delay(TimeSpan.FromSeconds(2));
+                    continue;
+                }
+                
+                throw new InvalidOperationException($"Failed to get auth token from {tokenUrl}. Status: {response.StatusCode}, Content: {content}");
+            }
+            catch (HttpRequestException) when (i < 4)
+            {
+                // Connection error, retry
+                await Task.Delay(TimeSpan.FromSeconds(2));
+                continue;
+            }
+        }
+        
+        throw new InvalidOperationException($"Failed to get auth token after multiple retries from {tokenUrl}");
+    }
+    
+    public DotnetRestServiceClient GetClient() => _client;
+    public DotnetRestServiceServer GetServer() => _server;
+
+    public void Dispose()
+    {
+        _httpClient?.Dispose();
+        _server.Stop();
+    }
+}
+
+[CollectionDefinition("ApplicationCollection")]
+public class ApplicationCollection : ICollectionFixture<ApplicationFixture>
+{
+    // This class has no code; it's just a marker for the test collection
+}
+
+public class TokenRequest
+{
+    public string ClientId { get; set; } = string.Empty;
+    public string ClientSecret { get; set; } = string.Empty;
+}
+
+public class TokenResponse
+{
+    public string AccessToken { get; set; } = string.Empty;
+    public string TokenType { get; set; } = string.Empty;
+    public int ExpiresIn { get; set; }
+}

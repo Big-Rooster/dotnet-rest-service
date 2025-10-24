@@ -1,0 +1,51 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotnetRestService.API", "DotnetRestService.API\DotnetRestService.API.csproj", "{62CC92B2-6982-4A02-B05D-E0A31257EF87}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotnetRestService.Client", "DotnetRestService.Client\DotnetRestService.Client.csproj", "{A5715ABD-DD20-4589-B0BB-DD52585D8224}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotnetRestService.Core", "DotnetRestService.Core\DotnetRestService.Core.csproj", "{95240ACC-7839-4817-A88C-59212A888B0E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotnetRestService.Server", "DotnetRestService.Server\DotnetRestService.Server.csproj", "{37717C90-08F4-4408-9566-8994079FE2BD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotnetRestService.IntegrationTests", "DotnetRestService.IntegrationTests\DotnetRestService.IntegrationTests.csproj", "{D3129B33-4681-474A-99AA-379CA05E27A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotnetRestService.UnitTests", "DotnetRestService.UnitTests\DotnetRestService.UnitTests.csproj", "{92197B70-E84F-4889-A8D2-1FFD6634CAF4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{62CC92B2-6982-4A02-B05D-E0A31257EF87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62CC92B2-6982-4A02-B05D-E0A31257EF87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62CC92B2-6982-4A02-B05D-E0A31257EF87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62CC92B2-6982-4A02-B05D-E0A31257EF87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5715ABD-DD20-4589-B0BB-DD52585D8224}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5715ABD-DD20-4589-B0BB-DD52585D8224}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5715ABD-DD20-4589-B0BB-DD52585D8224}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5715ABD-DD20-4589-B0BB-DD52585D8224}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95240ACC-7839-4817-A88C-59212A888B0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95240ACC-7839-4817-A88C-59212A888B0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95240ACC-7839-4817-A88C-59212A888B0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95240ACC-7839-4817-A88C-59212A888B0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37717C90-08F4-4408-9566-8994079FE2BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37717C90-08F4-4408-9566-8994079FE2BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37717C90-08F4-4408-9566-8994079FE2BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37717C90-08F4-4408-9566-8994079FE2BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3129B33-4681-474A-99AA-379CA05E27A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3129B33-4681-474A-99AA-379CA05E27A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3129B33-4681-474A-99AA-379CA05E27A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3129B33-4681-474A-99AA-379CA05E27A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92197B70-E84F-4889-A8D2-1FFD6634CAF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92197B70-E84F-4889-A8D2-1FFD6634CAF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92197B70-E84F-4889-A8D2-1FFD6634CAF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92197B70-E84F-4889-A8D2-1FFD6634CAF4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
